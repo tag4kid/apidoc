@@ -1,0 +1,361 @@
+FORMAT: 1A
+HOST: http://tag4kid1.apiary.io/
+
+# tag4kid
+
+tag4kid1 is a API allowing user (an adult) to 
+
+* view, update and create Profile
+* view and update Beacons
+* view, update and create ChildRelations
+
+# tag4kid1 API Root [/]
+
+This resource does not have any attributes. Instead it offers the initial
+API affordances in the form of the links in the JSON body.
+
+
+
+## Retrieve the Entry Point [GET]
+
++ Response 200 (application/json)
+
+        {
+            "profile_url": "/profile",
+            "beacon_url": "/beacons",
+            "childRelation_url": "/childrelations"
+        }
+
+## Group Profile
+
+Resources related to (Adult) Profile in the API.
+
+## View/Update Profile [/profile/{profile_id}]
+
+An (adult) profile object has the following attributes:
+
++ firstName
++ lastName
++ email
++ mobile - cell phone number
++ imgurl - profile image url
++ id - profile id
+
++ Parameters
+    + profile_id: sichen11234567890 (required, string) - ID of the profile in form of a string
+
+### View a Profile Detail [GET]
+
++ Response 200 (application/json)
+
+        {
+            "firstName": "Si",
+            "lastName": "Chen",
+            "email": "sichen78@hotmail.com",
+            "mobile": "+11234567890",
+            "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+            "id": "sichen11234567890"
+        }
+
+### Update a Profile [PUT]
+
+Update profile using this action. It takes a JSON
+object containing the (adult) profile 
+
++ firstName (string)
++ lastName (string)
++ email (string)
++ mobile (string) - cell phone number
++ imgurl (string) - profile image url
+
++ Request (application/json)
+
+        {
+            "firstName": "Jia",
+            "lastName": "Yu",
+            "email": "sichen78@hotmail.com",
+            "mobile": "+11234567890",
+            "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+        }
+
++ Response 205 (application/json)
+
+    + Headers
+
+            Location: /profile/sichen11234567890
+
+    + Body
+
+            {
+                "firstName": "Jia",
+                "lastName": "Yu",
+                "email": "sichen78@hotmail.com",
+                "mobile": "+11234567890",
+                "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+                "id": "sichen11234567890"
+            }
+
+## Create a Profile [/profile]
+
+### Create a Profile [POST]
+
+Create profile using this action. It takes a JSON
+object containing the (adult) profile 
+
++ firstName (string)
++ lastName (string)
++ email (string)
++ mobile (string) - cell phone number
++ imgurl (string) - profile image url
+
++ Request (application/json)
+
+        {
+            "firstName": "Si",
+            "lastName": "Chen",
+            "email": "sichen78@hotmail.com",
+            "mobile": "+11234567890",
+            "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /profile/sichen11234567890
+
+    + Body
+
+            {
+                "firstName": "Si",
+                "lastName": "Chen",
+                "email": "sichen78@hotmail.com",
+                "mobile": "+11234567890",
+                "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+                "id": "sichen11234567890"
+            }
+
+## Group Beacon
+
+Resources related to Beacon in the API.
+
+## View / Update Beacons [/beacons/{beacon_id}]
+
+A Beacon object has the following attributes:
+
++ uuid
++ major
++ minor
++ battery
++ kid - the associated kid id, if available
+
++ Parameters
+    + beacon_id: 12345678.1111.2222.3333.444444444444.1.1 (required, string) - ID of the Beacon in form of an string
+
+### View a Beacon Detail [GET]
+
++ Response 200 (application/json)
+
+        {
+            "uuid": "12345678.1111.2222.3333.444444444444",
+            "major": "1",
+            "mino": "1",
+            "battery": 100,
+            "kid": "matthew.1234567"
+        }
+    
+### Update a Beacon Detail [PUT]
+Update beacon using this action. It takes a JSON
+object containing the battery and/or the associated kid_id 
+
++ battery (string)
++ kid (string)
+
++ Request (application/json)
+
+        {
+            "battery": 98,
+            "kid": "Jason.1234567"
+        }
+
++ Response 205 (application/json)
+
+    + Headers
+
+            Location: /beacons/12345678.1111.2222.3333.444444444444.1.1
+
+    + Body
+
+            {
+            "uuid": "12345678.1111.2222.3333.444444444444",
+            "major": "1",
+            "mino": "1",
+            "battery": 98,
+            "kid": "Jason.1234567"
+            }
+
+## Beacons Collection [/beacons{?page}]
+
++ Parameters
+    + page: 1 (optional, number) - The page of beacons to return
+
+### List All Beacons [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Link: </beacons?page=2>; rel="next"
+
+    + Body
+
+            [
+                {
+                    "uuid": "12345678.1111.2222.3333.444444444444",
+                    "major": "1",
+                    "mino": "1",
+                    "battery": 98,
+                    "kid": "Jason.1234567"
+                },
+                {
+                    "uuid": "12345678.1111.2222.3333.444444444444",
+                    "major": "1",
+                    "mino": "2",
+                    "battery": 48,
+                    "kid": "Matt.1234567"
+                },
+                {
+                    "uuid": "12345678.1111.2222.3333.444444444444",
+                    "major": "1",
+                    "mino": "3",
+                    "battery": 100,
+                    "kid": "Erin.1234567"
+                }
+            ]
+
+## Group ChildRelation
+
+Resources related to ChildRelation in the API.
+
+## ChildRelations [/childrelations/{childrelation_id}]
+
+A ChildRelation object has the following attributes:
+
++ privilegs - an integer that is a bitmask for various permissions
++ name - name of the relationship, which is a string
++ start - An ISO8601 date when the relationship starts
++ stop - An ISO8601 date when the relationship (will) stop
++ id - relationship id, which is a string
++ kids - An array of Kid objects.
++ adults - An array of Adult object
++ tags - An array of key-value pair
+
++ Parameters
+    + childrelation_id: cr.12345679 (required, string) - ID of the Question in form of a string
+
+### View a ChildRelation Detail [GET]
+
++ Response 200 (application/json)
+
+        {
+            "privilegs": 256,
+            "name": "parents",
+            "start": "2014-11-11T08:40:51.620Z",
+            "stop": "2030-11-11T08:40:51.620Z",
+            "id": "cr.12345679",
+            "kids" [
+                {
+                    "firstName" : "Erin",
+                    "lastName"  : "Chen",
+                    "id" : "Erin.1234567",
+                    "birthDate" : "2013-11-11T00:00:0.0Z",
+                    "imgurl" : "http://thepandorasociety.com/wp-content/uploads/2015/04/PT7-2.jpg",
+                    "beacons" : [
+                        "12345678.1111.2222.3333.444444444444.1.3"
+                    ]
+                },
+                {
+                    "firstName" : "Jason",
+                    "lastName"  : "Chen",
+                    "id" : "Json.1234567",
+                    "birthDate" : "2014-11-11T00:00:0.0Z",
+                    "imgurl" : "http://www.karabel.net/files/Kittens21527fef8ba190f499c7a6e665c23669.JPG",
+                    "beacons" : [
+                        "12345678.1111.2222.3333.444444444444.1.2"
+                    ]
+                }
+            ],
+                    
+            "adults": [
+                {
+                "firstName": "Si",
+                "lastName": "Chen",
+                "email": "sichen78@hotmail.com",
+                "mobile": "+11234567890",
+                "imgurl": "http://www.cats.org.uk/uploads/images/pages/photo_latest14.jpg"
+                "id": "sichen11234567890"
+                }, {
+                "firstName": "Jia",
+                "lastName": "Yu",
+                "email": "jiayu78@hotmail.com",
+                "mobile": "+11234567890",
+                "imgurl": "http://shechive.files.wordpress.com/2012/08/just-kitten-14.jpg"
+                "id": "jiayu11234567890"
+                }
+            ],
+            
+            "tags": [
+                "family" : "f2345",
+                "city" : "san jose",
+                "type" : "family"
+            ]
+        }
+
+## kids [/childrelations/{childrelation_id}/kids/{kid_id}]
+
++ Parameters
+    + childrelation_id: cr.12345679 (required, string) - ID of the relationship in form of an string
+    + kid_id: Json.1234567 (required, string) - ID of the Kid in form of an string
+
+### update kid information on a Kid [PUT]
+
+This action allows you to update a kid's information.
+
++ firstName (string)
++ lastName (string)
++ birthDate (string)
++ imgurl (string)
++ beacons (array of beacon ids)
+
+
++ Request (application/json)
+
+        {
+            "firstName" : "Jason",
+            "lastName"  : "Chen",
+            "birthDate" : "2014-11-11T00:00:0.0Z",
+            "imgurl" : "http://www.karabel.net/files/Kittens21527fef8ba190f499c7a6e665c23669.JPG",
+            "beacons" : [
+                "12345678.1111.2222.3333.444444444444.1.1"
+            ]
+        }
+
++ Response 205 (application/json)
+
+    + Headers
+
+            Location: /childrelations/cr.12345679/Json.1234567
+
+    + Body
+
+            {
+                "firstName" : "Jason",
+                "lastName"  : "Chen",
+                "id" : "Json.1234567",
+                "birthDate" : "2014-11-11T00:00:0.0Z",
+                "imgurl" : "http://www.karabel.net/files/Kittens21527fef8ba190f499c7a6e665c23669.JPG",
+                "beacons" : [
+                    "12345678.1111.2222.3333.444444444444.1.1"
+                ]
+            }
+
